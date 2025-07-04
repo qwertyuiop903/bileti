@@ -13,6 +13,68 @@
       font-size: 16px;
       color: #222;
     }
+    .search-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #156283;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1000;
+  }
+  
+  #scrollToTopBtn:hover {
+    background-color: #1953b0;
+  }
+  
+  #scrollToTopBtn.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+#searchInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#searchSuggestions {
+  position: absolute;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 1000;
+  display: none;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
     .container {
       max-width: 900px;
       margin: 2rem auto;
@@ -121,8 +183,12 @@ table.comparison td {
 <body>
   <div class="container">
     <h1>Вопросы по базам данных и сетям</h1>
+    <div class="search-container">
+  <input type="text" id="searchInput" placeholder="Начните вводить вопрос..." autocomplete="off">
+  <div id="searchSuggestions"></div>
+</div>
 
-    <div class="question">
+    <div class="question" id="question-1">
       <h2><span class="question-number">1.</span> Дайте определение понятиям «база данных», «система управления базами данных (СУБД)». Перечислите и охарактеризуйте основные функции СУБД.</h2>
       <div class="answer">
         <p><strong>База данных (БД)</strong> — организованная совокупность структурированных данных, относящихся к определенной предметной области.</p>
@@ -139,7 +205,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-2">
       <h2><span class="question-number">2.</span> Дайте определение понятию «проектирование БД». Перечислите и охарактеризуйте виды проектирования.</h2>
       <div class="answer">
         <p><strong>Проектирование БД</strong> — процесс создания модели данных, которая будет поддерживать требования информационной системы.</p>
@@ -152,7 +218,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-3">
       <h2><span class="question-number">3.</span> Укажите назначение ER-модели в процессе проектирования БД. Перечислите и охарактеризуйте основные элементы ER-модели.</h2>
       <div class="answer">
         <p><strong>Назначение ER-модели:</strong> визуальное представление структуры данных и взаимосвязей между сущностями.</p>
@@ -165,7 +231,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-4">
       <h2><span class="question-number">4.</span> Дайте определение понятию «нормализация БД». Охарактеризуйте первых три этапа нормализации.</h2>
       <div class="answer">
         <p><strong>Нормализация БД</strong> — процесс устранения избыточности данных и аномалий обновления.</p>
@@ -178,7 +244,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-5">
       <h2><span class="question-number">5.</span> Дайте характеристику SQL. В чем его отличие от языков структурного программирования?</h2>
       <div class="answer">
         <p><strong>SQL (Structured Query Language)</strong> — декларативный язык для работы с реляционными базами данных.</p>
@@ -193,7 +259,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-6">
       <h2><span class="question-number">6.</span> Дайте определение понятию «тип данных». Перечислите и опишите типы данных в языке SQL.</h2>
       <div class="answer">
         <p><strong>Тип данных</strong> — атрибут, определяющий характер информации, которая может храниться в столбце таблицы.</p>
@@ -227,7 +293,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 7 -->
-    <div class="question">
+    <div class="question" id="question-7">
       <h2><span class="question-number">7.</span> Укажите назначение команды ALTER TABLE. Перечислите способы применения ALTER TABLE для изменения таблицы.</h2>
       <div class="answer">
         <p><strong>Назначение ALTER TABLE:</strong> изменение структуры существующей таблицы в базе данных.</p>
@@ -245,7 +311,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 8 -->
-    <div class="question">
+    <div class="question" id="question-8">
       <h2><span class="question-number">8.</span> Дайте определение понятиям «первичный ключ» и «внешний ключ». Укажите и охарактеризуйте виды связей между таблицами в реляционных БД.</h2>
       <div class="answer">
         <p><strong>Первичный ключ (Primary Key, PK)</strong> — столбец или набор столбцов, однозначно идентифицирующих каждую строку в таблице. Не может содержать NULL значения.</p>
@@ -260,7 +326,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 9 -->
-    <div class="question">
+    <div class="question" id="question-9">
       <h2><span class="question-number">9.</span> Дайте определение понятию «администрирование БД». Перечислите и опишите задачи администратора БД.</h2>
       <div class="answer">
         <p><strong>Администрирование БД</strong> — комплекс мероприятий по управлению, настройке, обслуживанию и обеспечению безопасности баз данных.</p>
@@ -279,7 +345,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 10 -->
-    <div class="question">
+    <div class="question" id="question-10">
       <h2><span class="question-number">10.</span> Дайте определение понятию «вычислительная сеть». Перечислите и охарактеризуйте основные типы сетей.</h2>
       <div class="answer">
         <p><strong>Вычислительная сеть</strong> — это система, которая соединяет компьютеры и другие устройства для обмена данными
@@ -326,7 +392,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-11">
       <h2><span class="question-number">11.</span> Перечислите и опишите характеристики линий связи. Приведите примеры причин ухудшения передачи данных по линиям связи.</h2>
       <div class="answer">
         <p><strong>Основные характеристики линий связи:</strong></p>
@@ -353,7 +419,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 12 -->
-    <div class="question">
+    <div class="question" id="question-12">
       <h2><span class="question-number">12.</span> Что называется «топологией сети»? Перечислите её виды и опишите, чем физическая топология отличается от логической. Укажите факторы, влияющие на выбор топологии.</h2>
       <div class="answer">
         <p><strong>Топология сети</strong> - способ соединения компьютеров и других сетевых устройств между собой.</p>
@@ -384,7 +450,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 13 -->
-    <div class="question">
+    <div class="question" id="question-13">
       <h2><span class="question-number">13.</span> Укажите применение, характеристики и строение коаксиального кабеля. Укажите преимущества и недостатки коаксиального кабеля по сравнению с другими видами кабелей.</h2>
       <div class="answer">
         <p><strong>Применение коаксиального кабеля:</strong></p>
@@ -430,7 +496,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 14 -->
-    <div class="question">
+    <div class="question" id="question-14">
       <h2><span class="question-number">14.</span> Охарактеризуйте кабель типа «витая пара»: область использования, устройство и основные свойства. Сравните его достоинства и недостатки с другими кабелями.</h2>
       <div class="answer">
         <p><strong>Область использования:</strong></p>
@@ -495,7 +561,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 15 -->
-    <div class="question">
+    <div class="question" id="question-15">
       <h2><span class="question-number">15.</span> Укажите применение, характеристики и строение оптоволоконного кабеля. Укажите преимущества и недостатки оптоволоконного кабеля по сравнению с другими видами кабелей.</h2>
       <div class="answer">
         <p><strong>Применение оптоволокна:</strong></p>
@@ -545,7 +611,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 16 -->
-    <div class="question">
+    <div class="question" id="question-16">
       <h2><span class="question-number">16.</span> Дайте определение понятию «сетевая модель OSI». Перечислите и укажите функции уровней сетевой модели OSI.</h2>
       <div class="answer">
         <p><strong>Сетевая модель OSI (Open Systems Interconnection)</strong> - эталонная модель взаимодействия открытых систем, описывающая 7 уровней сетевого взаимодействия.</p>
@@ -597,7 +663,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 17 -->
-    <div class="question">
+    <div class="question" id="question-17">
       <h2><span class="question-number">17.</span> Дайте определение понятию «протокол». Охарактеризуйте протоколы «IP», «TCP», «UDP».</h2>
       <div class="answer">
         <p><strong>Протокол</strong> - набор правил и соглашений, определяющих формат и порядок обмена сообщениями между сетевыми устройствами.</p>
@@ -633,7 +699,7 @@ table.comparison td {
       </div>
     </div>
 
-    <div class="question">
+    <div class="question" id="question-18">
       <div class="question-title">
         <span class="question-number">18</span>
         Дайте определение понятиям «коллизия пакетов», «CSMA/CD», «CSMA/CA». Укажите отличие в процессе обработки коллизий между CSMA/CD и CSMA/CA.
@@ -682,7 +748,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 19 -->
-    <div class="question">
+    <div class="question" id="question-19">
       <div class="question-title">
         <span class="question-number">19</span>
         Что такое «коммутатор»? Опишите, как он функционирует, перечислите и охарактеризуйте режимы коммутации. В чем отличие коммутатора от концентратора?
@@ -767,7 +833,7 @@ table.comparison td {
   </table>
 
     <!-- Вопрос 20 -->
-    <div class="question">
+    <div class="question" id="question-20">
       <div class="question-title">
         <span class="question-number">20</span>
         Дайте определение понятиям «сетевой мост», «маршрутизатор». Опишите принцип работы сетевого моста и маршрутизатора.
@@ -836,7 +902,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 21 -->
-    <div class="question">
+    <div class="question" id="question-21">
       <div class="question-title">
         <span class="question-number">21</span>
         Дайте определение понятию «представление». Укажите особенности и ограничения представлений.
@@ -866,7 +932,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 22 -->
-    <div class="question">
+    <div class="question" id="question-22">
       <div class="question-title">
         <span class="question-number">22</span>
         Дайте определение понятию «триггер». Укажите функциональное назначение триггеров. Укажите и охарактеризуйте кодовые слова, которые указывают момент срабатывания триггера.
@@ -910,7 +976,7 @@ table.comparison td {
     </div>
 
     <!-- Вопрос 23 -->
-    <div class="question">
+    <div class="question" id="question-23">
       <div class="question-title">
         <span class="question-number">23</span>
         Дайте определение понятиям «IP адрес», «IPv4 адресация», «подсеть». Укажите, из каких трех основных частей состоит пакет IPv4.
@@ -2706,8 +2772,132 @@ table.comparison td {
     <p>Средства должны находиться на видном месте, быть исправны и доступны.</p>
   </div>
 </div>
+<button id="scrollToTopBtn" title="Наверх">↑</button>
 
+  </div><script>
+ document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsContainer = document.getElementById('searchSuggestions');
 
-  </div>
+    // Список вопросов (замените на свои)
+    const questions = [
+      {Text:"1.	Дайте определение понятиям «база данных», «система управления базами данных (СУБД)». Перечислите и охарактеризуйте основные функции СУБД.", id: "question-1"},
+{Text:"2.	Дайте определение понятию «проектирование БД». Перечислите и охарактеризуйте виды проектирования.",id: "question-2"},
+{Text:"3.	Укажите назначение ER-модели в процессе проектирования БД. Перечислите и охарактеризуйте основные элементы ER-модели.",id: "question-3"},
+{Text:"4.	Дайте определение понятию «нормализация БД». Охарактеризуйте первых три этапа нормализации.",id: "question-4"},
+{Text:"5.	Дайте характеристику SQL. В чем его отличие от языков структурного программирования?",id: "question-5"},
+{Text:"6.	Дайте определение понятию «тип данных». Перечислите и опишите типы данных в языке SQL.",id: "question-6"},
+{Text:"7.	Укажите назначение команды ALTER TABLE. Перечислите способы применения ALTER TABLE для изменения таблицы.",id: "question-7"},
+{Text:"8.	Дайте определение понятиям «первичный ключ» и «внешний ключ». Укажите и охарактеризуйте виды связей между таблицами в реляционных БД.",id: "question-8"},
+{Text:"9.	Дайте определение понятию «администрирование БД». Перечислите и опишите задачи администратора БД.",id: "question-9"},
+{Text:"10.	Дайте определение понятию «вычислительная сеть». Перечислите и охарактеризуйте основные типы сетей.",id: "question-10"},
+{Text:"11.	Перечислите и опишите характеристики линий связи. Приведите примеры причин ухудшения передачи данных по линиям связи.",id: "question-11"},
+{Text:"12.	Что называется «топологией сети»? Перечислите её виды и опишите, чем физическая топология отличается от логической. Укажите факторы, влияющие на выбор топологии.",id: "question-12"},
+{Text:"13.	Укажите применение, характеристики и строение коаксиального кабеля. Укажите преимущества и недостатки коаксиального кабеля по сравнению с другими видами кабелей.",id: "question-13"},
+{Text:"14.	Охарактеризуйте кабель типа «витая пара»: область использования, устройство и основные свойства. Сравните его достоинства и недостатки с другими кабелями.",id: "question-14"},
+{Text:"15.	Укажите применение, характеристики и строение оптоволоконного кабеля. Укажите преимущества и недостатки оптоволоконного кабеля по сравнению с другими видами кабелей.",id: "question-15"},
+{Text:"16.	Дайте определение понятию «сетевая модель OSI». Перечислите и укажите функции уровней сетевой модели OSI.",id: "question-16"},
+{Text:"17.	Дайте определение понятию «протокол». Охарактеризуйте протоколы «IP», «TCP», «UDP».",id: "question-17"},
+{Text:"18.	Дайте определение понятиям «коллизия пакетов», «CSMA/CD», «CSMA/CA». Укажите отличие в процессе обработки коллизий между CSMA/CD и CSMA/CA.",id: "question-18"},
+{Text:"19.	Что такое «коммутатор»? Опишите, как он функционирует, перечислите и охарактеризуйте режимы коммутации. В чем отличие коммутатора от концентратора?",id: "question-19"},
+{Text:"20.	Дайте определение понятиям «сетевой мост», «маршрутизатор». Опишите принцип работы сетевого моста и маршрутизатора.",id: "question-20"},
+{Text:"21.	Дайте определение понятию «представление». Укажите особенности и ограничения представлений.",id: "question-21"},
+{Text:"22.	Дайте определение понятию «триггер». Укажите функциональное назначение триггеров. Укажите и охарактеризуйте кодовые слова, которые указывают момент срабатывания триггера.",id: "question-22"},
+{Text:"23.	Дайте определение понятиям «IP адрес», «IPv4 адресация», «подсеть». Укажите, из каких трех основных частей состоит пакет IPv4.",id: "question-23"},
+{Text:"24.	 Дайте определение понятиям «IPv6 адресация», «маска подсети». Укажите и охарактеризуйте, из каких логических частей состоит любой IP адрес.",id: "question-24"},
+{Text:"25.	Дайте определение понятию «операционная система». Опишите принцип работы ОС. Укажите основные компоненты ОС.",id: "question-25"},
+{Text:"26.	Что понимается под понятием «командная строка»? Перечислите основные команды для работы с каталогами и файлами и охарактеризуйте каждую.",id: "question-26"},
+{Text:"27.	Дайте определение понятиям «файловая система», «файл», «директория». Опишите возможные способы защиты файлов.",id: "question-27"},
+{Text:"28.	Дайте определение понятию «драйвер». Укажите и охарактеризуйте типы драйверов.",id: "question-28"},
+{Text:"29.	Что такое «процесс» и «поток»? Объясните принцип работы распространённых алгоритмов планирования процессов.",id: "question-29"},
+{Text:"30.	Дайте определение понятию «диспетчер задач». Опишите основные функции диспетчера задач.",id: "question-30"},
+{Text:"31.	Дайте определение понятиям «виртуальная память», «ассоциативная память», «таблица страниц». Распишите принцип работы виртуальной памяти.",id: "question-31"},
+{Text:"32.	Что такое «маркер доступа» и «проверка прав доступа»? Укажите ключевые компоненты маркера доступа и опишите основные его типы.",id: "question-32"},
+{Text:"33.	Что обозначает понятие «администрирование ОС»? Перечислите и опишите основные задачи системного администратора.",id: "question-33"},
+{Text:"34.	Дайте определение понятию «буфер обмена». Охарактеризуйте его назначение. Перечислите стандартные горячие клавиши для работы с буфером обмена для ОС Windows.",id: "question-34"},
+{Text:"35.	Дайте определение понятию «компьютерный вирус». Перечислите пути заражения компьютера вирусами. Опишите признаки заражения компьютера вирусами.",id: "question-35"},
+{Text:"36.	Дайте определение понятиям «брандмауэр», «антивирусная программа». Приведите классификацию антивирусных программ. Перечислите известные антивирусные программы и их функции.",id: "question-36"},
+{Text:"37.	Дайте определение понятию «клавиатура». Перечислите и охарактеризуйте данные манипуляторы по типам механизмов.",id: "question-37"},
+{Text:"38.	Дайте определение понятию «манипулятор типа «мышь». Перечислите и охарактеризуйте виды данных манипуляторов по конструктивным особенностям.",id: "question-38"},
+{Text:"39.	Дайте определение понятию «видеокарта». Опишите разновидности видеокарт. Опишите основные характеристики видеокарты. ",id: "question-39"},
+{Text:"40.	Дайте определение понятию «оперативная память». Перечислите типы оперативной памяти. Охарактеризуйте тайминги оперативной памяти.",id: "question-40"},
+{Text:"41.	Дайте определение понятию «HTML». Перечислите и опишите содержимое основных элементов структуры HTML-документа.",id: "question-41"},
+{Text:"42.	Перечислите и охарактеризуйте теги для создания гиперссылок, списков различных видов, таблиц.",id: "question-42"},
+{Text:"43.	Дайте определение понятиям «каскадная таблица стилей (CSS)», «селектор». Опишите назначение CSS. Перечислите виды селекторов.",id: "question-43"},
+{Text:"44.	Дайте определение понятиям «криптография», «криптоанализ», «шифр». Опишите основные функции криптосистем.",id: "question-44"},
+{Text:"45.	Дайте определение понятиям «идентификация», «аутентификация», «авторизация». Перечислите и охарактеризуйте основные технологии управления доступом.",id: "question-45"},
+{Text:"46.	Дайте определение понятию «цифровая подпись». Охарактеризуйте причины ее использования.",id: "question-46"},
+{Text:"47.	Дайте определение понятиям «хеширование», «хеш-функция», «хеш». Приведите примеры хеш-функций и охарактеризуйте их.",id: "question-47"},
+{Text:"48.	Что понимается под понятием «политика безопасности организации»? Перечислите основные задачи политики безопасности и охарактеризуйте их.",id: "question-48"},
+{Text:"49.	Дайте определение понятиям «хакерская атака», «эксплойт». Перечислите и охарактеризуйте технологии обнаружения атак.",id: "question-49"},
+{Text:"50.	Дайте определение понятию «жизненный цикл разработки ПО». Перечислите и охарактеризуйте этапы жизненного цикла ПО.",id: "question-50"},
+    ];
+
+   searchInput.addEventListener('input', function() {
+      const inputText = this.value.toLowerCase();
+      suggestionsContainer.innerHTML = '';
+      
+      if (inputText.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      const filteredQuestions = questions.filter(q => 
+        q.Text.toLowerCase().includes(inputText)
+      );
+
+      if (filteredQuestions.length > 0) {
+        filteredQuestions.forEach(q => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.textContent = q.Text;
+          div.addEventListener('click', function() {
+            searchInput.value = ''; // Очищаем поле поиска
+            suggestionsContainer.style.display = 'none';
+            
+            const questionElement = document.getElementById(q.id);
+            if (questionElement) {
+              questionElement.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+              });
+              // Убрали подсветку полностью
+            }
+          });
+          suggestionsContainer.appendChild(div);
+        });
+        suggestionsContainer.style.display = 'block';
+      } else {
+        suggestionsContainer.style.display = 'none';
+      }
+    });
+
+    // Закрытие подсказок при клике вне поля
+    document.addEventListener('click', function(e) {
+      if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+        suggestionsContainer.style.display = 'none';
+      }
+    });
+
+    // Кнопка "Наверх"
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    if (scrollToTopBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+          scrollToTopBtn.classList.add('show');
+        } else {
+          scrollToTopBtn.classList.remove('show');
+        }
+      });
+      
+      scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+});
+</script>
 </body>
 </html>
